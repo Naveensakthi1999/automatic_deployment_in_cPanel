@@ -1,0 +1,13 @@
+deployment:
+  tasks:
+    # === Backend Deployment ===
+    - echo "Installing backend dependencies..."
+    - cd $DEPLOYPATH/backend && /usr/local/bin/npm install
+    - echo "Restarting Node.js app..."
+    - touch $DEPLOYPATH/backend/tmp/restart.txt
+
+    # === Frontend Deployment ===
+    - echo "Building React frontend..."
+    - cd $DEPLOYPATH/frontend && /usr/local/bin/npm install && /usr/local/bin/npm run build
+    - echo "Deploying frontend build to public_html..."
+    - /bin/rsync -a $DEPLOYPATH/frontend/build/ $DEPLOYPATH/../public_html/
